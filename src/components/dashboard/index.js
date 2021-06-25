@@ -3,6 +3,7 @@ import { Drawer,Button, Divider, Alert } from 'rsuite';
 import {useProfile} from '../../context/profile.context';
 import { database } from '../../misc/firebase';
 import EditableInput from '../EditableInput';
+import AvatarUploadBtn from './AvatarUploadBtn';
 import ProviderBlock from './ProviderBlock';
 
 
@@ -52,6 +53,8 @@ const onSave= async (newData)=>{
 
       />
       
+      <AvatarUploadBtn/>
+
     </Drawer.Body>
 
 {/* sign out part */}
