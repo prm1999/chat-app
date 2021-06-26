@@ -1,10 +1,10 @@
 import React, { useRef, useState } from 'react';
 import {Modal,Button, Alert} from 'rsuite'
 import AvatarEditor from 'react-avatar-editor' //  avtar editior
-import {useModelState} from '../../misc/custom-hooks'
+import {useModalState} from '../../misc/custom-hooks'
 import { database, storage } from '../../misc/firebase';
 import {useProfile} from '../../context/profile.context'
-
+import ProfileAvtar from '../ProfileAvtar'
 
 const fileInputTypes = '.png, .jpeg , .jpg';
 const acceptedfilesType=['image/png','image/jpeg','image/pjpeg'];
@@ -31,7 +31,7 @@ const isValidFiles=(file)=>acceptedfilesType.includes(file.type);
 
 const AvatarUploadBtn = () => {
 
-const {isOpen,open,close}=useModelState()
+const {isOpen,open,close}=useModalState()
 
 const [img,setImg]=useState(null)
 const {profile}=useProfile()
@@ -86,6 +86,15 @@ const onUploadClick= async()=>{
 
   return (
     <div className="mt-4  text-center">
+
+
+      <ProfileAvtar
+       src={profile.avatar} 
+       name={profile.name}
+       className="width-200 height-200 img-fullsize font-huge"
+       />
+
+
       <div>
         <label
           htmlFor="avatar-upload"

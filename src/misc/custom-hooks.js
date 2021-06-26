@@ -2,7 +2,7 @@ const { useState, useCallback,useEffect } = require("react");
 
 
 
- export function useModelState(defaultValue=false){
+ export function useModalState(defaultValue=false){
   const [isOpen, setIsOpen]=useState(defaultValue);
 
   const open= useCallback(()=>setIsOpen(true),[]);

@@ -1,12 +1,12 @@
 import React,{useCallback} from 'react'
 import {Alert, Button,Drawer,Icon} from 'rsuite';
-import { useMediaQuery, useModelState ,} from '../../misc/custom-hooks';
+import { useMediaQuery, useModalState ,} from '../../misc/custom-hooks';
 import { auth } from '../../misc/firebase';
 import Dashboard from '.';
 
 
 const DashboardToggle = () => {
-const {isOpen,close,open}=useModelState();
+const {isOpen,close,open}=useModalState();
 
  const isMobile= useMediaQuery('(max-width:992px)')
 
@@ -23,7 +23,7 @@ const {isOpen,close,open}=useModelState();
 
   return (
     <>
-    <Button block color="blue" onClick={open}>
+    <Button block  size="lg" color="blue" onClick={open}>
     <Icon icon="dashboard"/> Dashboard
     </Button>
       
