@@ -5,6 +5,11 @@ import {useModalState} from '../../misc/custom-hooks'
 import { database, storage } from '../../misc/firebase';
 import {useProfile} from '../../context/profile.context'
 import ProfileAvtar from '../ProfileAvtar'
+import { getUserUpadates } from '../../misc/helpers';
+
+
+
+
 
 const fileInputTypes = '.png, .jpeg , .jpg';
 const acceptedfilesType=['image/png','image/jpeg','image/pjpeg'];
@@ -73,8 +78,22 @@ const onUploadClick= async()=>{
       cacheControl:`public,max-age=${3600*24*3}`// for cache stored time
     });
     const downloadurl= await uploadAvatarResult.ref.getDownloadURL(); // make url of the image
-    const useAvtarRef=database.ref(`profiles/${profile.uid}`).child('avatar');
-    useAvtarRef.set(downloadurl);
+
+    const updates = await getUserUpadates(
+      profile.uid,
+      'avatar',
+      downloadurl,
+      database
+    );
+    await database.ref().update(updates)
+
+
+
+
+
+
+    // const useAvtarRef=database.ref(`profiles/${profile.uid}`).child('avatar');
+    // useAvtarRef.set(downloadurl);
     setIsLoading(false);
     Alert.info('Avatar is sucessfully uploaded',4000);
 
