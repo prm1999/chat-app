@@ -17,7 +17,7 @@ const Top = () => {
   return (
   <div>
     <div  className="d-flex justify0content-between align-item-center">
-     <h4>
+     <h4 className="text-disappear d-flex align-items-center">
        <Icon componentClass={Link}
        to="/"
        icon="arrow-circle-o-left"
@@ -43,4 +43,4 @@ const Top = () => {
   )
 }
 
-export default  Top
+export default  memo(Top)
