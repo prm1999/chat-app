@@ -90,7 +90,7 @@ const onKeyDown=(ev)=>{
          <Input placeholder=" write a new message here..."
          value={ input}
          onChange={onInputChange}
-         
+         onKeyDown={onKeyDown}
          />
       
           <InputGroup.Button 
@@ -98,7 +98,7 @@ const onKeyDown=(ev)=>{
            appearance="primary"
             onClick={onSendClick}
             disabled={isLoading}
-            onKeyDown={onKeyDown}
+           
             
             >
           <Icon icon="send"/>

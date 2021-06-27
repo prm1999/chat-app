@@ -14,6 +14,8 @@ const RoomInfoBtnModal = () => {
       <Button  appearance="link" className="px-0" onClick={open}>
         RoomInfoBtnModal
       </Button>
+
+      
       <Modal show={isOpen} onHide={close}>
           <Modal.Header>
             <Modal.Title>
