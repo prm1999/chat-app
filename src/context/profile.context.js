@@ -1,69 +1,103 @@
-import React, { createContext,useState,useContext,useEffect } from "react";
-import { auth, database } from "../misc/firebase";
+import React, { createContext, useState, useContext, useEffect } from 'react';
+import firebase from 'firebase/app';
+import { auth, database } from '../misc/firebase';
 
- const ProfileContext=  createContext();
+ export const isOfflineForDatabase = {
+  state: 'offline',
+  last_changed: firebase.database.ServerValue.TIMESTAMP,
+};
 
+const isOnlineForDatabase = {
+  state: 'online',
+  last_changed: firebase.database.ServerValue.TIMESTAMP,
+};
 
- export const ProfileProvider=({children })=>{
+const ProfileContext = createContext();
 
-  const [profile,setProfile]=useState(null);
+export const ProfileProvider = ({ children }) => {
+  const [profile, setProfile] = useState(null);
   // check for already sign in
-  const [isLoading,setIsLoading]=useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-
     let userRef;
-    const authUnsubscribe= auth.onAuthStateChanged(authobj=>{
-      console.log("authobj",authobj);
 
-      if(authobj){
+    let userStatusRef;
 
-        userRef=database.ref(`/profiles/${authobj.uid}`)
+    const authUnsubscribe = auth.onAuthStateChanged(authobj => {
+      console.log('authobj', authobj);
 
+      if (authobj) {
+        userStatusRef = database.ref(`/status/${authobj.uid}`);
 
-        // retrive data from database 
-        userRef.on('value',(snap)=>{
-         const {name,createdAt,avatar}= snap.val()
+        userRef = database.ref(`/profiles/${authobj.uid}`);
 
+        // retrive data from database
+        userRef.on('value', snap => {
+          const { name, createdAt, avatar } = snap.val();
 
-         const data={
-           name,
-           avatar,
-           createdAt,
-          uid:authobj.uid,
-          email:auth.email,
-        };
-        setProfile(data);
-        setIsLoading(false);
+          const data = {
+            name,
+            avatar,
+            createdAt,
+            uid: authobj.uid,
+            email: auth.email,
+          };
+          setProfile(data);
+          setIsLoading(false);
 
-        console.log('snapshot',data);
-
+          console.log('snapshot', data);
         });
 
-      }
-      else{
-        if(userRef){
-          userRef.off()
+        database
+          .ref('.info/connected')
+          .on('value', snapshot => {
+            // If we're not currently connected, don't do anything.
+            if (!!snapshot.val() === false) {
+              return;
+            }
+
+            userStatusRef
+              .onDisconnect()
+              .set(isOfflineForDatabase)
+              .then(() => {
+               
+                userStatusRef.set(isOnlineForDatabase);
+              });
+          });
+      } else {
+        if (userRef) {
+          userRef.off();
         }
+        if (userStatusRef) {
+          userStatusRef.off();
+        }
+
+        database.ref('.info/connected').off();
+
+
         setProfile(null);
         setIsLoading(false);
-
       }
     });
     return () => {
       authUnsubscribe();
+      database.ref('.info/connected').off();
 
-      if(userRef){
+      if (userRef) {
         userRef.off();
       }
-    }
-  }, [])
+      if (userStatusRef) {
+        userStatusRef.off();
+      }
+    };
+  }, []);
 
-  
-  return(
-  <ProfileContext.Provider value={ {isLoading,profile}}>
-    {children }
-   </ProfileContext.Provider>)
- };
+  return (
+    <ProfileContext.Provider value={{ isLoading, profile }}>
+      {children}
+    </ProfileContext.Provider>
+  );
+};
 
- export const useProfile=()=>useContext(ProfileContext);
+export const useProfile = () => useContext(ProfileContext);
