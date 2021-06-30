@@ -1,83 +1,69 @@
-import React, { useCallback, useState } from 'react'
-import { InputGroup,Icon,Input, Alert } from 'rsuite';
+import React, { useCallback, useState } from 'react';
+import { InputGroup, Icon, Input, Alert } from 'rsuite';
 
 const EditableInput = ({
-  
   initialValue,
   onSave,
-  label=null,
-  placeholder="write your value",
-emptyMsg="Input is empty",
+  label = null,
+  placeholder = 'write your value',
+  emptyMsg = 'Input is empty',
+  wrapperClassName = '',
+  ...inputProps
+}) => {
+  const [input, setInput] = useState(initialValue);
+  const [isEditable, setIsEditable] = useState(false);
 
-...inputProps}) => {
+  // event handler
+  const onInputChange = useCallback(value => {
+    setInput(value);
+  }, []);
 
-const [input,setInput]=useState(initialValue);
-const [isEditable,setIsEditable]=useState(false);
+  // on Edit  Nick Name Click handler
 
-// event handler
-const onInputChange=useCallback((value)=>{
-  setInput(value);
-},[])
+  const onEditClick = useCallback(() => {
+    setIsEditable(p => !p);
+    setInput(initialValue);
+  }, [initialValue]);
 
+  // on Save  Nick Name Click handler
 
-// on Edit  Nick Name Click handler
+  const onSaveClick = async () => {
+    const trimmed = input.trim();
+    if (trimmed === ' ') {
+      Alert.info(emptyMsg, 4000); // Alert message for if is blank
+    }
 
-const onEditClick=useCallback(()=>{
-  setIsEditable(p=>!p);
-  setInput(initialValue)
+    if (trimmed !== initialValue) {
+      await onSave(trimmed);
+    }
 
-},[initialValue]);
-
-// on Save  Nick Name Click handler
-
- const onSaveClick=async()=>{
-   const trimmed= input.trim();
-   if(trimmed===" "){
-     Alert.info(emptyMsg,4000) // Alert message for if is blank
-   }
-
-   if(trimmed !== initialValue){
-    await onSave(trimmed)
-   }
-
-
-   setIsEditable(false);
- }
-
-
-
-
+    setIsEditable(false);
+  };
 
   return (
-    <div>
-       {label}
+    <div className={wrapperClassName}>
+      {label}
       <InputGroup>
-     
-      <Input 
-       {...inputProps}
-      
-      disabled={!isEditable}
-      placeholder={placeholder}
-      value={input} 
-      onChange={onInputChange}
-      />
+        <Input
+          {...inputProps}
+          disabled={!isEditable}
+          placeholder={placeholder}
+          value={input}
+          onChange={onInputChange}
+        />
 
+        <InputGroup.Button onClick={onEditClick}>
+          <Icon icon={isEditable ? 'close' : 'edit2'} />
+        </InputGroup.Button>
 
-      <InputGroup.Button  onClick={onEditClick}>
-      <Icon  icon={isEditable ?'close':'edit2'}/>
-      </InputGroup.Button>
-
-        {isEditable &&( 
-      <InputGroup.Button  onClick={onSaveClick}>
-      <Icon  icon="check"/>
-      </InputGroup.Button>
+        {isEditable && (
+          <InputGroup.Button onClick={onSaveClick}>
+            <Icon icon="check" />
+          </InputGroup.Button>
         )}
-      
-
-
       </InputGroup>
     </div>
-  )
-}
+  );
+};
 
-export default EditableInput
+export default EditableInput;

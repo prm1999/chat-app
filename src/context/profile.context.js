@@ -25,9 +25,10 @@ export const ProfileProvider = ({ children }) => {
     let userStatusRef;
 
     const authUnsubscribe = auth.onAuthStateChanged(authobj => {
-      console.log('authobj', authobj);
+      // console.log('authobj', authobj);
 
       if (authobj) {
+        console.log(authobj.uid)
         userStatusRef = database.ref(`/status/${authobj.uid}`);
 
         userRef = database.ref(`/profiles/${authobj.uid}`);
