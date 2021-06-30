@@ -3,7 +3,7 @@ import { Button, Modal } from 'rsuite';
 import { useModalState } from '../../../misc/custom-hooks';
 import ProfileAvtar from '../../ProfileAvtar';
 
-const ProfileInfoBtnModal = ({ profile,...btnProps }) => {
+const ProfileInfoBtnModal = ({ profile, children, ...btnProps }) => {
   const { isOpen, close, open } = useModalState();
   const { name, avatar, createdAt } = profile;
   const shortName = profile.name; // .split('')[0]; use for single alphabet of name
@@ -28,8 +28,11 @@ const ProfileInfoBtnModal = ({ profile,...btnProps }) => {
           <p>Member Since {memeberSince}</p>
         </Modal.Body>
 
-        <Modal.Footer block onClick={close}>
-          close
+        <Modal.Footer>
+          {children}
+          <Button block onClick={close}>
+            close
+          </Button>
         </Modal.Footer>
       </Modal>
     </div>
