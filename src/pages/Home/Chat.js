@@ -39,6 +39,7 @@ const isAdmin=admins.includes(auth.currentUser.uid);
 const currentRoomData={
     name,
     description,
+    admins,
     isAdmin,
 }
 console.log("name",currentRoomData)

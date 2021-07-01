@@ -5,15 +5,20 @@ import ProfileAvtar from '../../ProfileAvtar';
 
 const ProfileInfoBtnModal = ({ profile, children, ...btnProps }) => {
   const { isOpen, close, open } = useModalState();
+
   const { name, avatar, createdAt } = profile;
+
   const shortName = profile.name; // .split('')[0]; use for single alphabet of name
+
   const memeberSince = new Date(createdAt).toLocaleDateString();
 
   return (
     <div>
-      <Button onClick={open}>{shortName}</Button>
+      <Button onClick={open}>
+        {shortName}
+      </Button>
 
-      <Modal {...btnProps} show={isOpen} onHide={close}>
+      <Modal  {...btnProps} show={isOpen} onHide={close}>
         <Modal.Header>
           <Modal.Title>{shortName} Profile</Modal.Title>
         </Modal.Header>
@@ -31,7 +36,7 @@ const ProfileInfoBtnModal = ({ profile, children, ...btnProps }) => {
         <Modal.Footer>
           {children}
           <Button block onClick={close}>
-            close
+            Close
           </Button>
         </Modal.Footer>
       </Modal>
