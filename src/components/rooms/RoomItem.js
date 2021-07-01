@@ -31,7 +31,8 @@ const {createdAt,name ,lastMessage,file}=room;
 
         <div className="text-disappear ml-2">
           <div className="italic">{lastMessage.author.name}</div>
-          <span> {lastMessage.text|| lastMessage.file.name}</span>
+          <span> {lastMessage.text||lastMessage.file.name}</span>
+          {/* || lastMessage.file.name */}
         </div>
 
 
