@@ -8,12 +8,14 @@ import { useCurrentRoom } from '../../../context/current-room.context';
 import { auth } from '../../../misc/firebase';
 import IconBtnControl from './IconBtnControl';
 import { useMediaQuery, useHover } from '../../../misc/custom-hooks';
+import ImgBtnModal from "./ImgBtnModal";
 
-const renderFileMessage = file => {
+
+const renderFileMessage = (file) => {
   if (file.contentType.includes('image')) {
     return (
       <div className="height-220">
-        {/* <ImgBtnModal src={file.url} fileName={file.name} /> */}
+        <ImgBtnModal src={file.url} fileName={file.name} />
       </div>
     );
   }
@@ -115,7 +117,7 @@ const MessageItem = ({ message, handleAdmin, handleLike, handleDelete }) => {
 
       <div>
         {text && <span className="word-breal-all">{text}</span>}
-        {/* {file && renderFileMessage(file)} */}
+        {file && renderFileMessage(file)}
       </div>
     </li>
   );

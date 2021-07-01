@@ -4,7 +4,7 @@ import ProfileAvtar  from "../ProfileAvtar"
 
 const RoomItem = ({room}) => {
 
-const {createdAt,name ,lastMessage}=room;
+const {createdAt,name ,lastMessage,file}=room;
 
   return (
     <div>
@@ -31,7 +31,7 @@ const {createdAt,name ,lastMessage}=room;
 
         <div className="text-disappear ml-2">
           <div className="italic">{lastMessage.author.name}</div>
-          <span> {lastMessage.text}</span>
+          <span> {lastMessage.text|| lastMessage.file.name}</span>
         </div>
 
 
